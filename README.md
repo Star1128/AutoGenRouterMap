@@ -1,15 +1,12 @@
-# 自动生成 Navigation 系统路由表插件
+# 为鸿蒙应用自动生成 Navigation 系统路由表
 
 该插件在编译时会扫描指定目录下的所有 ets 文件中的 @AppRouter 组件，并为组件生成对应的系统路由表配置文件和 Build 函数。
 
-## 编译方式
-
-cd node_modules/.bin
-tsc
-
 ## 使用方式
 
-修改项目的 hvigor/hvigor-config.json 文件，导入路由表插件
+1. 下载本仓库中的压缩产物 AutoGenRouterMap.tgz 到项目目录的某一位置
+
+2. 修改项目的 hvigor/hvigor-config.json 文件，导入插件
 
 ```json
 {
@@ -19,7 +16,7 @@ tsc
 }
 ```
 
-在各个模块的 hvigorfile.ts 文件中配置 扫描范围
+3. 在各个模块的 hvigorfile.ts 文件中配置 扫描范围
 
 ```typescript
 import { hspTasks } from '@ohos/hvigor-ohos-plugin';
@@ -38,7 +35,7 @@ export default {
 }
 ```
 
-在你项目的最底层的 common 模块中（需要放置路由 NavDestination 的模块必须都已经依赖了 common 模块），创建并导出 AppRouter 装饰器的声明
+4. 在你项目的最底层的 common 模块中（需要放置路由 NavDestination 的模块必须都已经依赖了 common 模块），创建并导出 AppRouter 装饰器的声明
 
 ```typescript
 // 自定义装饰器
@@ -55,7 +52,7 @@ export interface AppRouterParam {
 }
 ```
 
-使用时，只需要给组件添加 @AppRouter({ name: 'NavigationPage' }) 即可
+5. 使用时，只需要给组件添加 @AppRouter({ name: 'NavigationPage' }) 即可
 
 ```extendtypescript
 import { AppRouter } from 'common/Index';
@@ -81,5 +78,8 @@ export struct NavigationPage {
 }
 ```
 
+## 编译方式
 
+cd node_modules/.bin
+tsc
 
