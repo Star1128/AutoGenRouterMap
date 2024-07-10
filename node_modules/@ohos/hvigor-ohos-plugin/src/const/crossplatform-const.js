@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.ARKUIX_CONFIG_JSON5=exports.ARKUIX_ROOT=void 0,exports.ARKUIX_ROOT=".arkui-x",exports.ARKUIX_CONFIG_JSON5="arkui-x-config.json5";

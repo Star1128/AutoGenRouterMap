@@ -1,0 +1,146 @@
+{
+  "title": "JSON schema for hvigorfile.ts configuration in project",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": true,
+  "propertyNames": {
+    "enum": [
+      "overrides"
+    ]
+  },
+  "properties": {
+    "overrides": {
+      "description": "Configurations that can override configurations in build-profile.json5.",
+      "type": "object",
+      "propertyNames": {
+        "enum": [
+          "signingConfig",
+          "appOpt"
+        ]
+      },
+      "properties": {
+        "signingConfig": {
+          "description": "This field contains the signature materials used for modifying the openHarmony application. Multiple signature materials can be configured.",
+          "type": "object",
+          "propertyNames": {
+            "enum": [
+              "material",
+              "type"
+            ]
+          },
+          "properties": {
+            "material": {
+              "type": "object",
+              "propertyNames": {
+                "enum": [
+                  "storePassword",
+                  "certpath",
+                  "keyAlias",
+                  "keyPassword",
+                  "profile",
+                  "signAlg",
+                  "storeFile"
+                ]
+              },
+              "properties": {
+                "storePassword": {
+                  "type": "string"
+                },
+                "certpath": {
+                  "type": "string"
+                },
+                "keyAlias": {
+                  "type": "string"
+                },
+                "keyPassword": {
+                  "type": "string"
+                },
+                "profile": {
+                  "type": "string"
+                },
+                "signAlg": {
+                  "type": "string",
+                  "enum": [
+                    "SHA256withECDSA"
+                  ]
+                },
+                "storeFile": {
+                  "type": "string"
+                }
+              }
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "HarmonyOS",
+                "OpenHarmony"
+              ]
+            }
+          }
+        },
+        "appOpt": {
+          "description": "Indicates the global configuration of an application.",
+          "type": "object",
+          "propertyNames": {
+            "enum": [
+              "bundleName",
+              "bundleType",
+              "icon",
+              "label",
+              "vendor",
+              "versionCode",
+              "versionName"
+            ]
+          },
+          "properties": {
+            "bundleName": {
+              "description": "Indicates the bundle name of the application. It uniquely identifies the application. The value is a string with 7 to 128 bytes of a reverse domain name, for example, com.huawei.himusic. It is recommended that the first label of this attribute is the top-level domain com, the second label is the vendor or individual name, and the third label is the application name. This label is a string type and cannot be defaulted.",
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 7,
+              "pattern": "^[a-zA-Z][0-9a-zA-Z_.]+$"
+            },
+            "bundleType": {
+              "description": "Indicates the type of bundle",
+              "type":"string",
+              "enum": [
+                "app",
+                "atomicService",
+                "shared",
+                "appService"
+              ]
+            },
+            "label": {
+              "description": "Indicates the label of the application.",
+              "type": "string",
+              "maxLength": 63,
+              "pattern":  "^[$]string:[0-9a-zA-Z_.]+|(?=.*[{])(?=.*[}])[0-9a-zA-Z_.{}]+$"
+            },
+            "icon": {
+              "description": "Indicates the index to the application icon file, in the format of \"$media:application_icon\".This label can be left blank by default.",
+              "type": "string",
+              "pattern": "^[$]media:[0-9a-zA-Z_.]+|(?=.*[{])(?=.*[}])[0-9a-zA-Z_.{}]$"
+            },
+            "vendor": {
+              "description": "Describes the application vendor.",
+              "type": "string",
+              "maxLength": 255
+            },
+            "versionCode": {
+              "description": "Indicates the versionCode number of the application. The value is an integer greater than 0. A larger value generally represents a later version.The system determines the application version based on the tag value.This label cannot be left blank.",
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2147483647
+            },
+            "versionName": {
+              "description": "Indicates the text description of the application version.Used for displaying to users.A string can contain a maximum of 127 bytes.This label cannot be left blank.",
+              "type": "string",
+              "maxLength": 127,
+              "pattern": "^[0-9.]+|(?=.*[{])(?=.*[}])[0-9a-zA-Z_.{}]+$"
+            }
+          }
+        }
+      }
+    }
+  }
+}

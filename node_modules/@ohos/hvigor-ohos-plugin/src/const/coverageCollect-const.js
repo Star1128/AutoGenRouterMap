@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.coverageCollectConst=void 0;class coverageCollectConst{}exports.coverageCollectConst=coverageCollectConst,coverageCollectConst.PROJECT_PATH="projectPath",coverageCollectConst.REPORT_PATH="reportPath",coverageCollectConst.COVERAGE_FILE="coverageFile";

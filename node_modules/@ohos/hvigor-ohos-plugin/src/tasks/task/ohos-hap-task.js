@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.OhosHapTask=void 0;const ohos_module_task_js_1=require("./ohos-module-task.js");class OhosHapTask extends ohos_module_task_js_1.OhosModuleTask{constructor(s,e){super(s,e),this.targetCompileMode=this.moduleModel.getCompileMode(s.getTargetData().getProduct())}}exports.OhosHapTask=OhosHapTask;

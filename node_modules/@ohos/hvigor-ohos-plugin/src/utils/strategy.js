@@ -1,0 +1,1 @@
+"use strict";function getStrategy(t,e){var o;const r=null===(o=null==t?void 0:t[0])||void 0===o?void 0:o.strategy;let n=null!=e?e:r;for(const e of t)if(null==e?void 0:e.condition){n=e.strategy;break}return n}Object.defineProperty(exports,"__esModule",{value:!0}),exports.getStrategy=void 0,exports.getStrategy=getStrategy;

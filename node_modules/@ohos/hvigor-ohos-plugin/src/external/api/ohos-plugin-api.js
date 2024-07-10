@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.OhosPluginId=void 0;var ohos_plugin_id_js_1=require("../../plugin/common/ohos-plugin-id.js");Object.defineProperty(exports,"OhosPluginId",{enumerable:!0,get:function(){return ohos_plugin_id_js_1.OhosPluginId}});

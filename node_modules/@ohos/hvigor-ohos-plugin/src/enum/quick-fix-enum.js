@@ -1,0 +1,1 @@
+"use strict";var QuickFixEnum;Object.defineProperty(exports,"__esModule",{value:!0}),exports.QuickFixEnum=void 0,function(i){i[i.UNCHANGED=0]="UNCHANGED",i[i.BASE=1]="BASE",i[i.LAST=2]="LAST"}(QuickFixEnum=exports.QuickFixEnum||(exports.QuickFixEnum={}));

@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.ShellUtils=void 0;class ShellUtils{}exports.ShellUtils=ShellUtils,ShellUtils.JS_SHELL_PACKAGE="com.example.myapplication",ShellUtils.JS_SHELL_APPLICATION="ShellMyApplication",ShellUtils.JS_SHELL_APPLICATION_FULL=`${ShellUtils.JS_SHELL_PACKAGE}.${ShellUtils.JS_SHELL_APPLICATION}`;

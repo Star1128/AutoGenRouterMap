@@ -1,0 +1,22 @@
+{
+  "name": "autogenroutermap",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsc && node lib/index.js",
+    "build": "tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@ohos/hvigor": "^5.2.3",
+    "@ohos/hvigor-ohos-plugin": "^5.2.3",
+    "@types/node": "^20.14.10"
+  },
+  "dependencies": {
+    "handlebars": "^4.7.8",
+    "typescript": "^5.4.5"
+  }
+}

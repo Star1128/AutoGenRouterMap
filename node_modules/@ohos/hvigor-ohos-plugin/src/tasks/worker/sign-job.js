@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.runSign=void 0;const process_utils_js_1=require("../../utils/process-utils.js"),runSign=async e=>{const s=new process_utils_js_1.ProcessUtils(e.moduleName,`Sign${e.signType}`);await s.execute(e.verifySignCommands),await s.execute(e.signCommand)};exports.runSign=runSign;

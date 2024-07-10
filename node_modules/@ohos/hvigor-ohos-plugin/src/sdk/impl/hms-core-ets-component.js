@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.HmsCoreEtsComponent=void 0;const sdk_component_js_1=require("../superior/sdk-component.js");class HmsCoreEtsComponent extends sdk_component_js_1.SdkComponent{}exports.HmsCoreEtsComponent=HmsCoreEtsComponent;

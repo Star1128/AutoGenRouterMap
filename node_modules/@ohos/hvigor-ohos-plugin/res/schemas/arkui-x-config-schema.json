@@ -1,0 +1,29 @@
+{
+  "title": "ArkUI-X Cross-Platform Project Configuration",
+  "description": "This document describes how to configure the arkui-x-config.json5 file of the ArkUI-X cross-platform project.",
+  "type": "object",
+  "propertyNames": {
+    "enum": [
+      "crossplatform",
+      "modules"
+    ]
+  },
+  "properties": {
+    "crossplatform": {
+      "description": "Cross-platform application build enable flag",
+      "type": "boolean"
+    },
+    "modules": {
+      "description": "Describe the cross-platform modules required by Openharmony.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "crossplatform",
+    "modules"
+  ]
+}
