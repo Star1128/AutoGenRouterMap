@@ -8,6 +8,8 @@
 
 该插件在编译时会扫描指定目录下的所有 ets 文件中的 @AppRouter 组件，并为组件生成对应的系统路由表配置文件和 Build 函数。
 
+![image](https://images-pool-1310202894.cos.ap-beijing.myqcloud.com/typora/202407102225241.png)
+
 ## 使用方式
 
 1. 下载本仓库中的压缩产物 AutoGenRouterMap.tgz 到项目目录的某一位置
@@ -58,7 +60,7 @@ export interface AppRouterParam {
 }
 ```
 
-5. 使用时，只需要给组件添加 @AppRouter({ name: 'NavigationPage' }) 即可
+5. 使用时，只需要给组件添加 @AppRouter({ name: '[PAGE_NAME]' }) 即可
 
 ```extendtypescript
 import { AppRouter } from 'common/Index';
