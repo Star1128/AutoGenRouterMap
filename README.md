@@ -12,7 +12,7 @@
 
 ## 使用方式
 
-1. 下载本仓库中的压缩产物 AutoGenRouterMap.tgz 到项目目录的某一位置
+1. 从最新的 Release 种下载本仓库中的压缩产物 AutoGenRouterMap.tgz，放置到项目的 plugin 目录下
 
 2. 修改项目的 hvigor/hvigor-config.json 文件，导入插件
 
@@ -133,6 +133,12 @@ export function navigationPageBuilder() {
 ```shell
 cd node_modules/.bin
 tsc
+```
+
+打 tgz 包
+
+```shell
+tar -czvf AutoGenRouterMap.tgz --exclude='AutoGenRouterMap/.git' --exclude='AutoGenRouterMap/node_modules' --exclude='AutoGenRouterMap/src' AutoGenRouterMap
 ```
 
 ## 参考
