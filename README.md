@@ -12,7 +12,7 @@
 
 ## 使用方式
 
-1. 从最新的 Release 种下载本仓库中的压缩产物 AutoGenRouterMap.tgz，放置到项目的 plugin 目录下
+1. 从最新的 Release 中下载本仓库中的压缩产物 AutoGenRouterMap.tgz，放置到项目的 plugin 目录下
 
 2. 修改项目的 hvigor/hvigor-config.json 文件，导入插件
 
