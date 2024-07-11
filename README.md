@@ -1,4 +1,4 @@
-# 为鸿蒙应用自动生成 Navigation 系统路由表
+# 为鸿蒙应用 Navigation 组件自动生成系统路由表
 
 从 API 12开始，Navigation 支持使用系统路由表的方式进行动态路由。通过配置在工程 resources/base/profile 中创建 router_map.json 文件就可以实现跳转。
 
