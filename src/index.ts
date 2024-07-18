@@ -27,6 +27,7 @@ const ROUTER_BUILDER_PATH = "src/main/ets/generated";
 const ROUTER_BUILDER_NAME = "RouterBuilder.ets";
 const ROUTER_MAP_PATH = "src/main/resources/base/profile";
 const ROUTER_ANNOTATION_NAME = "AppRouter";
+const ROUTER_ANNOTATION_PARAM = "name";
 const ROUTER_BUILDER_TEMPLATE = "viewBuilder.tpl";
 
 class NodeInfo {
@@ -84,6 +85,8 @@ export class PluginConfig {
   modulePath?: string;
   // 装饰器名称
   annotation?: string;
+  // 装饰器参数
+  annotationParam?: string;
   // 扫描的文件路径
   // scanFiles?: string[];
   scanDir?: string;
@@ -115,7 +118,7 @@ export class EtsAnalyzer {
   analyzeResult: AnalyzeResult = new AnalyzeResult();
   // 关键字位置
   keywordPos: number = 0;
-  // 是否存在装饰器
+  // 是否存在自定义的装饰器
   routerAnnotationExisted: boolean = false;
 
   constructor(pluginConfig: PluginConfig, sourcePath: string) {
@@ -137,33 +140,33 @@ export class EtsAnalyzer {
 
   resolveNode(node: ts.Node): NodeInfo | undefined {
     switch (node.kind) {
-    // import节点（如 import * as path from "path";）
+      // import节点（如 import * as path from "path";）
       case ts.SyntaxKind.ImportDeclaration:
         this.resolveImportDeclaration(node);
         break;
-    // 未知的声明节点
+      // 未知的声明节点
       case ts.SyntaxKind.MissingDeclaration:
         this.resolveMissDeclaration(node);
         break;
-    // 装饰器节点
+      // 装饰器节点
       case ts.SyntaxKind.Decorator:
         this.resolveDecoration(node);
         break;
-    // 函数调用节点
+      // 函数调用节点
       case ts.SyntaxKind.CallExpression:
         this.resolveCallExpression(node);
         break;
-    // 表达式节点
+      // 表达式节点
       case ts.SyntaxKind.ExpressionStatement:
         this.resolveExpression(node);
         break;
-    // 标识符节点
+      // 标识符节点
       case ts.SyntaxKind.Identifier:
         return this.resolveIdentifier(node);
-    // 字符串节点
+      // 字符串节点
       case ts.SyntaxKind.StringLiteral:
         return this.resolveStringLiteral(node);
-    // 对象赋值节点
+      // 对象赋值节点
       case ts.SyntaxKind.PropertyAssignment:
         return this.resolvePropertyAssignment(node);
     }
@@ -194,25 +197,29 @@ export class EtsAnalyzer {
         // 标识符是否是自定义的装饰器
         if (identifier.text === this.pluginConfig.annotation) {
           this.routerAnnotationExisted = true;
+          console.log(`AutoGenRouterMap ------ find CustomAnnotation in detected file: ${this.sourcePath}`);
           const arg = callExpression.arguments[0];
-          // 调用方法的第一个参数是否是表达式
-          if (arg.kind === ts.SyntaxKind.ObjectLiteralExpression) {
+          // 调用方法的第一个参数是否是对象字面量表达式
+          if (arg?.kind === ts.SyntaxKind.ObjectLiteralExpression) {
             const properties = (arg as ts.ObjectLiteralExpression).properties;
             // 遍历装饰器中的所有参数
             properties.forEach((propertie) => {
               if (propertie.kind === ts.SyntaxKind.PropertyAssignment) {
                 // 参数是否是自定义装饰器中的变量名
-                if ((propertie.name as ts.Identifier).escapedText === "name") {
+                if ((propertie.name as ts.Identifier).escapedText === this.pluginConfig.annotationParam) {
                   // 将装饰器中的变量的值赋值给解析结果中的变量
                   this.analyzeResult.name = (propertie.initializer as ts.StringLiteral).text;
+                  console.log(`AutoGenRouterMap ------ find CustomAnnotation Param: ${this.analyzeResult.name} in detected file: ${this.sourcePath}`);
                 }
-                if ((propertie.name as ts.Identifier).escapedText === "hasParam") {
-                  // 将装饰器中的变量的值赋值给解析结果中的变量
-                  this.analyzeResult.param = propertie.initializer.kind === ts.SyntaxKind.TrueKeyword ? "param: ESObject" : "";
-                }
+                // 去除 hasParam 参数
+                // if ((propertie.name as ts.Identifier).escapedText === "hasParam") {
+                //   // 将装饰器中的变量的值赋值给解析结果中的变量
+                //   this.analyzeResult.param = propertie.initializer.kind === ts.SyntaxKind.TrueKeyword ? "param: ESObject" : "";
+                // }
+              } else {
+                // TODO: 无参数时找到 struct 的名字
               }
             })
-
           }
         }
       }
@@ -230,11 +237,26 @@ export class EtsAnalyzer {
   resolveExpression(node: ts.Node) {
     let args = node as ts.ExpressionStatement;
     let identifier = this.resolveNode(args.expression);
+
+    //  TODO：如果找到了自定义注解，但自定义注解没有指定 name 参数，那么就去读下一个 struct 类名（前提是解析是按顺序的，目前无法实现）
+    // if (this.routerAnnotationExisted && !this.analyzeResult.name) {
+    //   console.log(`AutoGenRouterMap ------ finding struct name in detected file: ${this.sourcePath}`);
+    //   if (identifier?.value === this.pluginConfig.viewKeyword) {
+    //     console.log(`AutoGenRouterMap ------ find struct in detected file: ${this.sourcePath}`);
+    //     this.keywordPos = args.end;
+    //   }
+    //   if (this.keywordPos === args.pos) {
+    //     this.analyzeResult.name = identifier?.value;
+    //     console.log(`AutoGenRouterMap ------ find struct name: ${this.analyzeResult.name} in detected file: ${this.sourcePath}`);
+    //   }
+    // }
+
+    // 节点如果匹配上了注解参数中指定的 name
     if (this.analyzeResult?.name?.endsWith(identifier?.value)) {
       this.analyzeResult.viewName = identifier?.value;
-      let viewName: string = identifier?.value.toString();
-      viewName = `${viewName.charAt(0).toLowerCase()}${viewName.slice(1, viewName.length)}`;
-      this.analyzeResult.functionName = viewName;
+      let functionName: string = identifier?.value.toString();
+      functionName = `${functionName.charAt(0).toLowerCase()}${functionName.slice(1, functionName.length)}`;
+      this.analyzeResult.functionName = functionName;
     }
   }
 
@@ -287,6 +309,7 @@ export class EtsAnalyzer {
 // hvigor中配置的插件方法
 export function etsGeneratorPlugin(pluginConfig: PluginConfig): HvigorPlugin {
   pluginConfig.annotation = ROUTER_ANNOTATION_NAME;
+  pluginConfig.annotationParam = ROUTER_ANNOTATION_PARAM;
   pluginConfig.builderTpl = ROUTER_BUILDER_TEMPLATE;
   pluginConfig.routerMapDir = ROUTER_MAP_PATH;
   pluginConfig.builderDir = ROUTER_BUILDER_PATH;
@@ -294,8 +317,8 @@ export function etsGeneratorPlugin(pluginConfig: PluginConfig): HvigorPlugin {
   return {
     pluginId: PLUGIN_ID,
     apply(node: HvigorNode) {
-      console.log(`Exec ${PLUGIN_ID}...${__dirname}`);
-      console.log(`node:${node.getNodeName},nodePath:${node.getNodePath()}`);
+      console.log(`AutoGenRouterMap ------ Exec ${PLUGIN_ID}...${__dirname}`);
+      console.log(`AutoGenRouterMap ------ node: ${node.getNodeName}, nodePath: ${node.getNodePath()}`);
       // 获取模块名
       pluginConfig.moduleName = node.getNodeName();
       // 获取模块路径
@@ -307,8 +330,8 @@ export function etsGeneratorPlugin(pluginConfig: PluginConfig): HvigorPlugin {
 
 // 解析插件开始执行
 function pluginExec(config: PluginConfig) {
-  console.log("plugin exec...");
-  console.log(`scanDir = ${config.scanDir}`);
+  console.log("AutoGenRouterMap ------ plugin exec...");
+  console.log(`AutoGenRouterMap ------ scanDir = ${config.scanDir}`);
   const templateModel: TemplateModel = {
     viewList: []
   };
@@ -320,7 +343,6 @@ function pluginExec(config: PluginConfig) {
   const files: string[] = getFiles(scanPath);
   // 遍历需要扫描的文件列表
   files.forEach((file) => {
-    console.log(`detacted file: ${file}`);
     // 文件绝对路径
     let sourcePath = `${file}`;
     if (!sourcePath.endsWith('.ets')) {
@@ -331,10 +353,11 @@ function pluginExec(config: PluginConfig) {
     const analyzer = new EtsAnalyzer(config, sourcePath);
     // 开始解析文件
     analyzer.start();
-    console.log(JSON.stringify(analyzer.analyzeResult));
-    console.log(importPath);
+
     // 如果解析的文件中存在装饰器，则将结果保存到列表中
     if (analyzer.routerAnnotationExisted) {
+      console.log(`AutoGenRouterMap ------ analyzeResult = ${JSON.stringify(analyzer.analyzeResult)}`);
+      console.log(`AutoGenRouterMap ------ importPath = ${importPath}`);
       templateModel.viewList.push({
         viewName: analyzer.analyzeResult.viewName,
         importPath: importPath,
@@ -361,7 +384,6 @@ function pluginExec(config: PluginConfig) {
   generateIndex(config);
 }
 
-
 function getFiles(dir: string): string[] {
   return readdirSync(dir).reduce((files, file) => {
     const name = join(dir, file);
@@ -372,7 +394,7 @@ function getFiles(dir: string): string[] {
 
 // 根据模板生成路由方法文件
 function generateBuilder(templateModel: TemplateModel, config: PluginConfig) {
-  console.log(JSON.stringify(templateModel));
+  console.log(`AutoGenRouterMap ------ templateModel = ${JSON.stringify(templateModel)}`);
   const builderPath = path.resolve(__dirname, `../${config.builderTpl}`);
   const tpl = readFileSync(builderPath, { encoding: "utf8" });
   const template = Handlebars.compile(tpl);

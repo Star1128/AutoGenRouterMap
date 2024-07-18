@@ -14,7 +14,7 @@
 
 1. 从最新的 Release 中下载插件 AutoGenRouterMap.tgz，放置到项目的 plugin 目录下
 
-2. 修改项目的 hvigor/hvigor-config.json 文件，导入插件
+2. 修改项目的 `hvigor/hvigor-config.json` 文件，导入插件
 
 ```json
 {
@@ -24,7 +24,7 @@
 }
 ```
 
-3. 在各个模块的 hvigorfile.ts 文件中配置 扫描范围
+3. 在各个模块的 `hvigorfile.ts` 文件中配置 扫描范围
 
 ```typescript
 import { hspTasks } from '@ohos/hvigor-ohos-plugin';
@@ -43,7 +43,7 @@ export default {
 }
 ```
 
-4. 在各模块的 module.json5 中配置系统路由表路径
+4. 在各模块的 `module.json5` 中配置系统路由表路径
 
 ```json
 {
@@ -53,7 +53,7 @@ export default {
 }
 ```
 
-5. 在你项目的最底层的 common 模块中（需要放置路由 NavDestination 的模块必须都已经依赖了 common 模块），创建并导出 AppRouter 装饰器的声明
+5. 在你项目的最底层的 `common` 模块中（需要放置路由 `NavDestination` 的模块必须都已经依赖了 `common` 模块），创建并导出 AppRouter 装饰器的声明
 
 ```typescript
 // 自定义装饰器
@@ -72,7 +72,8 @@ export interface AppRouterParam {
 export { AppRouter } from './src/main/ets/annotation/AppRouter'
 ```
 
-6. 使用时，只需要给组件添加 @AppRouter({ name: '[PAGE_NAME]' }) 即可
+6. 使用时，只需要给组件添加 `@AppRouter({ name: '[PAGE_NAME]' })` 即可
+==注意，路由名称结尾必须和组件名称匹配。如下面的例子中，路由名可以是 `NavigationPage`，也可以是 `/common/NavigationPage`，即必须以 `NavigationPage` 结尾==
 
 ```typescript
 import { AppRouter } from 'common/Index';
@@ -100,10 +101,10 @@ export struct NavigationPage {
 
 ## 生成产物
 
-执行编译后，会在项目目录中自动生成 generated 目录，其中的 RouterBuilder.ets 文件中就包含了 Navigation 所需的页面 Builder 函数。
+执行编译后，会在项目目录中自动生成 `generated` 目录，其中的 `RouterBuilder.ets` 文件中就包含了 Navigation 所需的页面 Builder 函数。
 
 ```typescript
-import { NavigationPage3 } from '../pages/navigation/NavigationPage'
+import { NavigationPage } from '../pages/navigation/NavigationPage'
 
 @Builder
 export function navigationPageBuilder() {
@@ -111,7 +112,7 @@ export function navigationPageBuilder() {
 }
 ```
 
-在 src/main/resources/base/profile/router_map.json 中生成对应的页面配置。
+在 `src/main/resources/base/profile/router_map.json` 中生成对应的页面配置。
 
 ```json
 {
@@ -127,6 +128,10 @@ export function navigationPageBuilder() {
   ]
 }
 ```
+
+## 常见问题
+
+1. 跨模块路由时，如果出现了组件名称重复的情况，建议声明 `@AppRouter` 时指定前缀，如 `@AppRouter({ name: 'NavigationPage' })` 可以改为 `@AppRouter({ name: '/common/NavigationPage' })`
 
 ## 编译方式
 
