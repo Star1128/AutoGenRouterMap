@@ -426,11 +426,12 @@ function generateIndex(config: PluginConfig) {
     writeFileSync(indexPath, '', 'utf-8');
   }
   let indexContent: string = readFileSync(indexPath, { encoding: "utf8" });
-  if (!indexContent.includes(" * Copyright (c) 2024 Huawei Device Co., Ltd.\r")) {
-    const licensesPath = path.resolve(__dirname, `../license.tpl`);
-    const licenses: string = readFileSync(licensesPath, { encoding: "utf-8" });
-    indexContent = licenses + "\n" + indexContent;
-  }
+  // 去除 Licenses
+  // if (!indexContent.includes(" * Copyright (c) 2024 Huawei Device Co., Ltd.\r")) {
+  //   const licensesPath = path.resolve(__dirname, `../license.tpl`);
+  //   const licenses: string = readFileSync(licensesPath, { encoding: "utf-8" });
+  //   indexContent = licenses + "\n" + indexContent;
+  // }
   const indexArr: string[] = indexContent.split("\n");
   const indexArray: string[] = [];
   indexArr.forEach((value: string) => {
