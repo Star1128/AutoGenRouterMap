@@ -53,7 +53,7 @@ export default {
 }
 ```
 
-5. 在你项目的最底层的 `common` 模块中（需要放置路由 `NavDestination` 的模块必须都已经依赖了 `common` 模块），创建并导出 AppRouter 装饰器的声明
+5. 在你项目的最底层的模块中（需要放置路由 `NavDestination` 的模块必须都已经依赖了该模块），创建并导出 AppRouter 装饰器的声明
 
 ```typescript
 // 自定义装饰器
@@ -73,7 +73,7 @@ export { AppRouter } from './src/main/ets/annotation/AppRouter'
 ```
 
 6. 使用时，只需要给组件添加 `@AppRouter({ name: '[PAGE_NAME]' })` 即可
-==注意，路由名称结尾必须和组件名称匹配。如下面的例子中，路由名可以是 `NavigationPage`，也可以是 `/common/NavigationPage`，即必须以 `NavigationPage` 结尾==
+> 注意，路由名称结尾必须和组件名称匹配。如下面的例子中，路由名可以是 `NavigationPage`，也可以是 `/common/NavigationPage`，即必须以 `NavigationPage` 结尾
 
 ```typescript
 import { AppRouter } from 'common/Index';
