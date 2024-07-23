@@ -132,6 +132,7 @@ export function navigationPageBuilder() {
 ## 常见问题
 
 1. 跨模块路由时，如果出现了组件名称重复的情况，建议声明 `@AppRouter` 时指定前缀，如 `@AppRouter({ name: 'NavigationPage' })` 可以改为 `@AppRouter({ name: '/common/NavigationPage' })`
+2. 跨模块路由时，如果报错找不到页面，请检查模块间是否存在依赖关系（鸿蒙 Navigation 自身的特性）
 
 ## 编译方式
 
